@@ -1,3 +1,4 @@
+
 export type QuestionOption = {
   value: number;
   label: string;
@@ -29,7 +30,7 @@ export type CompanyData = {
 };
 
 export type AssessmentState = {
-  step: 'welcome' | 'company-info' | 'assessment' | 'results';
+  step: 'welcome' | 'ods-intro' | 'company-info' | 'assessment' | 'results';
   companyData: CompanyData;
   answers: Record<string, number>; // questionId -> value (0-3 or -1 for NA)
   currentSectionIndex: number;

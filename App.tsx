@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AssessmentState, CompanyData } from './types';
 import { SECTIONS, QUESTIONS } from './data';
 import { Welcome } from './views/Welcome';
+import { ODSIntro } from './views/ODSIntro';
 import { CompanyInfo } from './views/CompanyInfo';
 import { Assessment } from './views/Assessment';
 import { Results } from './views/Results';
@@ -49,6 +50,12 @@ export default function App() {
   }, [state, isClient]);
 
   const handleStart = () => {
+    // Navigate to ODS Intro instead of Company Info directly
+    setState(prev => ({ ...prev, step: 'ods-intro' }));
+  };
+
+  const handleODSIntroNext = () => {
+    window.scrollTo(0, 0);
     setState(prev => ({ ...prev, step: 'company-info' }));
   };
 
@@ -128,6 +135,8 @@ export default function App() {
     switch (state.step) {
       case 'welcome':
         return <Welcome onStart={handleStart} />;
+      case 'ods-intro':
+        return <ODSIntro onNext={handleODSIntroNext} />;
       case 'company-info':
         return <CompanyInfo initialData={state.companyData} onNext={handleCompanyInfoSubmit} />;
       case 'assessment':
