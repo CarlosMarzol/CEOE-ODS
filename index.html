@@ -64,7 +64,7 @@
         .print-page {
             width: 210mm;
             min-height: 297mm;
-            padding: 20mm; /* Standard margin inside the page */
+            padding: 15mm 20mm;
             margin: 0 auto;
             background: white;
             page-break-after: always;
@@ -72,6 +72,7 @@
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
+            overflow: hidden; /* Prevent overflow creating new pages */
         }
 
         .print-page.cover {
@@ -82,7 +83,7 @@
         }
 
         .print-page.certificate {
-            padding: 0;
+            padding: 10mm;
             justify-content: center;
         }
 
@@ -100,10 +101,14 @@
             display: none !important;
         }
 
-        /* Chart Sizing */
+        /* Chart Sizing Fixes */
         .recharts-responsive-container {
-            height: 350px !important;
             width: 100% !important;
+        }
+        
+        /* Ensure text is black/dark */
+        .text-gray-500, .text-gray-400 {
+            color: #4b5563 !important;
         }
       }
     </style>
@@ -111,7 +116,7 @@
 {
   "imports": {
     "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-    "recharts": "https://esm.sh/recharts@^3.7.0",
+    "recharts": "https://esm.sh/recharts@^2.12.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4"

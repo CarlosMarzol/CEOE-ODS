@@ -1,8 +1,8 @@
 import React from 'react';
-import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip } from 'recharts';
+import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip, PieChart, Pie, Cell } from 'recharts';
 import { SECTIONS, QUESTIONS, RECOMMENDATIONS, MATURITY_LEVELS } from '../data';
 import { SectionId, CompanyData, Question } from '../types';
-import { Download, RefreshCw, Award, FileCheck, Building, MapPin, Users, Briefcase, TrendingUp, AlertCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Download, RefreshCw, FileCheck, TrendingUp, AlertCircle, ArrowRight, CheckCircle2, Building, Users, Briefcase, MapPin } from 'lucide-react';
 
 interface ResultsProps {
   answers: Record<string, number>;
@@ -69,50 +69,54 @@ export const Results: React.FC<ResultsProps> = ({ answers, companyData, onReset 
 
   const today = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
 
+  // Pie chart data for global score
+  const pieData = [
+    { name: 'Score', value: globalScore },
+    { name: 'Remaining', value: 100 - globalScore }
+  ];
+
   return (
     <div className="font-sans text-slate-900 bg-white">
       
       {/* ---------------- PRINT: PAGE 1 (COVER) ---------------- */}
       <div className="print-page cover hidden print:flex flex-col relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-8 bg-yellow-500 z-10"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-800 rounded-full blur-3xl opacity-20 -mr-20 -mb-20"></div>
-
-        <div className="w-full h-full p-16 flex flex-col justify-between z-20">
-            <div className="mt-12">
-                <h1 className="text-9xl font-black tracking-tighter text-white mb-2">CEOE</h1>
-                <div className="w-32 h-2 bg-yellow-500 mb-6"></div>
-                <p className="text-xl tracking-[0.4em] font-light text-blue-200 uppercase">Empresas Españolas</p>
-            </div>
-
-            <div className="space-y-6">
-                <span className="inline-block px-4 py-1 border border-yellow-500 text-yellow-500 rounded-full text-sm font-bold uppercase tracking-wider">
+        {/* Header Strip */}
+        <div className="absolute top-0 left-0 w-full h-12 bg-yellow-500 z-10"></div>
+        
+        <div className="w-full h-full p-20 flex flex-col justify-between z-20 pt-32">
+            <div>
+                <h1 className="text-9xl font-black tracking-tighter text-white mb-6">CEOE</h1>
+                <p className="text-2xl tracking-[0.3em] font-light text-blue-200 uppercase mb-2">Empresas Españolas</p>
+                <div className="inline-block px-4 py-1 border border-yellow-500 text-yellow-500 rounded-full text-xs font-bold uppercase tracking-wider mb-16">
                     Informe Confidencial
-                </span>
-                <h2 className="text-6xl font-bold leading-tight text-white">
-                    Informe de<br/>
-                    <span className="text-blue-200">Sostenibilidad ODS</span>
-                </h2>
+                </div>
+
+                <div className="space-y-4">
+                    <h2 className="text-7xl font-bold leading-none text-white">
+                        Informe de<br/>
+                        <span className="text-blue-300">Sostenibilidad ODS</span>
+                    </h2>
+                </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-10 border border-white/20 mt-auto">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-12 border border-white/10 mt-auto">
                 <p className="text-blue-300 text-xs font-bold uppercase tracking-widest mb-4">Organización Evaluada</p>
-                <div className="text-4xl font-bold text-white mb-8">{companyData.businessName}</div>
+                <div className="text-5xl font-bold text-white mb-10">{companyData.businessName}</div>
                 
-                <div className="grid grid-cols-2 gap-8 text-sm text-blue-100">
-                     <div className="flex flex-col">
-                        <span className="opacity-60 text-[10px] uppercase font-bold mb-1">Sector</span>
-                        <span className="font-medium text-lg">{companyData.sector}</span>
+                <div className="grid grid-cols-2 gap-12 text-sm text-blue-100">
+                     <div className="flex flex-col border-l-2 border-yellow-500 pl-4">
+                        <span className="opacity-60 text-[10px] uppercase font-bold mb-1">Sector de Actividad</span>
+                        <span className="font-medium text-xl text-white">{companyData.sector}</span>
                      </div>
-                     <div className="flex flex-col">
-                        <span className="opacity-60 text-[10px] uppercase font-bold mb-1">Fecha</span>
-                        <span className="font-medium text-lg">{today}</span>
+                     <div className="flex flex-col border-l-2 border-yellow-500 pl-4">
+                        <span className="opacity-60 text-[10px] uppercase font-bold mb-1">Fecha de Emisión</span>
+                        <span className="font-medium text-xl text-white">{today}</span>
                      </div>
                 </div>
             </div>
             
-            <div className="mt-8 text-center text-[10px] text-blue-400 uppercase tracking-widest">
-                Generado por la Herramienta de Autodiagnóstico CEOE
+            <div className="mt-12 text-center text-[9px] text-blue-400 uppercase tracking-widest opacity-60">
+                Generado por la Herramienta de Autodiagnóstico CEOE &copy; {new Date().getFullYear()}
             </div>
         </div>
       </div>
@@ -120,54 +124,104 @@ export const Results: React.FC<ResultsProps> = ({ answers, companyData, onReset 
 
       {/* ---------------- PRINT: PAGE 2 (EXECUTIVE SUMMARY) ---------------- */}
       <div className="print-page hidden print:flex flex-col">
-         <div className="border-b-4 border-blue-900 pb-4 mb-12">
-            <h3 className="text-3xl font-bold text-blue-900">Resumen Ejecutivo</h3>
-            <p className="text-gray-500 mt-2">Visión general del desempeño en sostenibilidad</p>
+         {/* Page Header */}
+         <div className="border-b-2 border-blue-900 pb-2 mb-8">
+            <h3 className="text-2xl font-bold text-blue-900">Resumen Ejecutivo</h3>
+            <p className="text-sm text-gray-500">Visión general del desempeño en sostenibilidad</p>
          </div>
 
-         <div className="grid grid-cols-1 gap-12 flex-grow">
-             {/* Score Card */}
-             <div className="bg-slate-50 rounded-2xl p-10 flex items-center justify-between border border-gray-200">
-                <div>
-                    <h4 className="text-gray-500 font-bold uppercase tracking-widest text-sm mb-2">Índice Global de Madurez</h4>
-                    <div className="text-5xl font-black text-blue-900 mb-2">{globalScore}%</div>
-                    <div className="inline-block bg-blue-900 text-white px-4 py-1 rounded text-sm font-bold uppercase">
+         {/* Content Container - Flex-grow to fill available space but managed carefully */}
+         <div className="flex flex-col gap-8">
+             
+             {/* Top Card: Score */}
+             <div className="bg-slate-50 rounded-xl p-8 border border-gray-200 flex flex-row items-center justify-between h-[250px]">
+                <div className="flex-1 pr-8">
+                    <h4 className="text-gray-500 font-bold uppercase tracking-widest text-xs mb-3">Índice Global de Madurez</h4>
+                    <div className="text-7xl font-black text-blue-900 mb-4">{globalScore}%</div>
+                    <div className="inline-block bg-blue-900 text-white px-6 py-2 rounded text-base font-bold uppercase tracking-wide">
                         Nivel: {globalMaturityLabel}
                     </div>
                 </div>
-                <div className="w-48 h-48 relative">
-                    <svg className="w-full h-full transform -rotate-90">
-                        <circle cx="96" cy="96" r="80" stroke="#e2e8f0" strokeWidth="16" fill="transparent" />
-                        <circle cx="96" cy="96" r="80" stroke="#EAB308" strokeWidth="16" fill="transparent" strokeDasharray={502} strokeDashoffset={502 - (502 * globalScore) / 100} />
-                    </svg>
+                
+                {/* Donut Chart */}
+                <div className="w-48 h-48 relative flex-shrink-0">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <Pie
+                                data={pieData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={60}
+                                outerRadius={80}
+                                startAngle={90}
+                                endAngle={-270}
+                                dataKey="value"
+                                stroke="none"
+                                isAnimationActive={false} 
+                            >
+                                <Cell key="cell-0" fill="#EAB308" />
+                                <Cell key="cell-1" fill="#e2e8f0" />
+                            </Pie>
+                        </PieChart>
+                    </ResponsiveContainer>
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <TrendingUp size={48} className="text-blue-900" />
+                        <TrendingUp size={40} className="text-blue-900" />
                     </div>
                 </div>
              </div>
 
-             {/* Radar Chart Container */}
-             <div className="flex-grow flex flex-col justify-center items-center p-4">
-                 <h4 className="text-center font-bold text-gray-700 mb-8 uppercase tracking-widest">Mapa de Competitividad</h4>
-                 <div className="w-full h-[500px]">
+             {/* Bottom Card: Radar Chart */}
+             <div className="flex flex-col items-center h-[500px]">
+                 <h4 className="text-center font-bold text-gray-600 mb-4 uppercase tracking-widest text-sm">Mapa de Competitividad</h4>
+                 
+                 <div className="w-full flex-grow relative">
                     <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="80%" data={scores}>
-                        <PolarGrid stroke="#94a3b8" />
-                        <PolarAngleAxis dataKey="name" tick={{ fill: '#0f172a', fontSize: 14, fontWeight: 700 }} />
-                        <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                        <Radar name="Su Empresa" dataKey="score" stroke="#1e3a8a" strokeWidth={4} fill="#1e3a8a" fillOpacity={0.4} />
-                        <Radar name="Media" dataKey="benchmark" stroke="#cbd5e1" strokeWidth={2} fill="#cbd5e1" fillOpacity={0.2} strokeDasharray="5 5" />
-                    </RadarChart>
+                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={scores}>
+                            <PolarGrid stroke="#94a3b8" />
+                            <PolarAngleAxis 
+                                dataKey="name" 
+                                tick={{ fill: '#1e3a8a', fontSize: 12, fontWeight: 800 }} 
+                            />
+                            <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                            
+                            {/* Company Radar - No Animation */}
+                            <Radar 
+                                name="Su Empresa" 
+                                dataKey="score" 
+                                stroke="#1e3a8a" 
+                                strokeWidth={3} 
+                                fill="#1e3a8a" 
+                                fillOpacity={0.5} 
+                                isAnimationActive={false}
+                            />
+                            
+                            {/* Benchmark Radar - No Animation */}
+                            <Radar 
+                                name="Media" 
+                                dataKey="benchmark" 
+                                stroke="#cbd5e1" 
+                                strokeWidth={2} 
+                                fill="#cbd5e1" 
+                                fillOpacity={0.2} 
+                                strokeDasharray="5 5" 
+                                isAnimationActive={false}
+                            />
+                        </RadarChart>
                     </ResponsiveContainer>
                  </div>
-                 <div className="flex gap-8 mt-4">
-                    <div className="flex items-center text-sm font-bold text-blue-900"><div className="w-4 h-4 bg-blue-900 mr-2 rounded"></div> Su Empresa</div>
-                    <div className="flex items-center text-sm font-bold text-gray-400"><div className="w-4 h-4 bg-gray-300 mr-2 rounded"></div> Media del Sector</div>
+
+                 <div className="flex gap-8 mt-4 pt-4 border-t border-gray-100 w-full justify-center">
+                    <div className="flex items-center text-xs font-bold text-blue-900">
+                        <div className="w-3 h-3 bg-blue-900 mr-2 rounded-sm"></div> Su Empresa
+                    </div>
+                    <div className="flex items-center text-xs font-bold text-gray-400">
+                        <div className="w-3 h-3 bg-gray-300 mr-2 rounded-sm"></div> Media del Sector
+                    </div>
                  </div>
              </div>
          </div>
          
-         <div className="mt-auto pt-8 border-t border-gray-200 text-xs text-gray-400 flex justify-between">
+         <div className="mt-auto pt-4 border-t border-gray-200 text-[10px] text-gray-400 flex justify-between">
             <span>Informe generado el {today}</span>
             <span>Página 2</span>
          </div>
@@ -176,37 +230,36 @@ export const Results: React.FC<ResultsProps> = ({ answers, companyData, onReset 
 
       {/* ---------------- PRINT: PAGES 3+ (DETAILS) ---------------- */}
       <div className="print-page hidden print:flex flex-col">
-         <div className="border-b-4 border-blue-900 pb-4 mb-8">
-            <h3 className="text-3xl font-bold text-blue-900">Análisis Detallado</h3>
-            <p className="text-gray-500 mt-2">Desglose por dimensiones y recomendaciones estratégicas</p>
+         <div className="border-b-2 border-blue-900 pb-2 mb-6">
+            <h3 className="text-2xl font-bold text-blue-900">Análisis Detallado</h3>
+            <p className="text-sm text-gray-500">Desglose por dimensiones y recomendaciones estratégicas</p>
          </div>
 
-         <div className="space-y-8">
+         <div className="space-y-5">
             {scores.map((area) => (
-                <div key={area.id} className="page-break-avoid border border-gray-200 rounded-xl overflow-hidden mb-6">
-                    <div className="bg-slate-50 p-4 border-b border-gray-200 flex justify-between items-center">
+                <div key={area.id} className="page-break-avoid border border-gray-200 rounded-lg overflow-hidden break-inside-avoid">
+                    <div className="bg-slate-50 px-5 py-3 border-b border-gray-200 flex justify-between items-center">
                         <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded bg-white border border-gray-200 flex items-center justify-center font-bold text-blue-900">
+                            <div className="w-6 h-6 rounded bg-white border border-gray-200 flex items-center justify-center font-bold text-blue-900 text-xs">
                                 {area.name.charAt(0)}
                             </div>
-                            <h4 className="text-xl font-bold text-gray-900">{area.name}</h4>
+                            <h4 className="text-lg font-bold text-gray-900">{area.name}</h4>
                         </div>
                         <div className="flex items-center gap-4">
-                            <div className="text-right">
-                                <span className="block text-[10px] uppercase font-bold text-gray-500">Nivel</span>
-                                <span className="font-bold text-blue-900">{area.maturity}</span>
-                            </div>
-                            <div className="text-2xl font-black text-blue-900 w-16 text-right">{area.score}%</div>
+                            <span className="text-[10px] uppercase font-bold text-gray-500 bg-white px-2 py-0.5 rounded border border-gray-200">
+                                {area.maturity}
+                            </span>
+                            <span className="text-xl font-black text-blue-900">{area.score}%</span>
                         </div>
                     </div>
                     
-                    <div className="p-6 grid grid-cols-3 gap-6">
-                        <div className="col-span-2">
-                             <h5 className="text-xs font-bold text-blue-900 uppercase tracking-widest mb-2">Plan de Acción Sugerido</h5>
+                    <div className="p-5 grid grid-cols-12 gap-6">
+                        <div className="col-span-8">
+                             <h5 className="text-[10px] font-bold text-blue-900 uppercase tracking-widest mb-2">Plan de Acción Sugerido</h5>
                              <p className="text-sm text-gray-700 italic leading-relaxed">"{area.recommendation}"</p>
                         </div>
-                        <div className="bg-red-50 p-4 rounded-lg border border-red-100">
-                            <h5 className="text-xs font-bold text-red-800 uppercase tracking-widest mb-2">Focos de Mejora</h5>
+                        <div className="col-span-4 bg-red-50 p-3 rounded border border-red-100">
+                            <h5 className="text-[10px] font-bold text-red-800 uppercase tracking-widest mb-2">Focos de Mejora</h5>
                             {area.opportunities.length > 0 ? (
                                 <ul className="space-y-1">
                                     {area.opportunities.map(q => (
@@ -216,8 +269,8 @@ export const Results: React.FC<ResultsProps> = ({ answers, companyData, onReset 
                                     ))}
                                 </ul>
                             ) : (
-                                <div className="flex items-center text-green-700 text-xs font-bold">
-                                    <CheckCircle2 size={14} className="mr-2" /> Sin brechas críticas
+                                <div className="flex items-center text-green-700 text-[10px] font-bold">
+                                    <CheckCircle2 size={12} className="mr-1" /> Sin brechas críticas
                                 </div>
                             )}
                         </div>
@@ -225,56 +278,67 @@ export const Results: React.FC<ResultsProps> = ({ answers, companyData, onReset 
                 </div>
             ))}
          </div>
+         
+         <div className="mt-auto pt-4 border-t border-gray-200 text-[10px] text-gray-400 flex justify-between">
+            <span>Informe generado el {today}</span>
+            <span>Página 3</span>
+         </div>
       </div>
 
 
       {/* ---------------- PRINT: LAST PAGE (CERTIFICATE) ---------------- */}
       <div className="print-page certificate hidden print:flex">
-          <div className="w-full h-full border-[20px] border-double border-blue-900 p-12 flex flex-col items-center justify-between bg-white m-8">
+          <div className="w-full h-full border-[16px] border-double border-blue-900 p-16 flex flex-col items-center justify-between bg-white m-4 relative">
               
+              {/* Corner Ornaments */}
+              <div className="absolute top-4 left-4 w-16 h-16 border-t-4 border-l-4 border-yellow-500"></div>
+              <div className="absolute top-4 right-4 w-16 h-16 border-t-4 border-r-4 border-yellow-500"></div>
+              <div className="absolute bottom-4 left-4 w-16 h-16 border-b-4 border-l-4 border-yellow-500"></div>
+              <div className="absolute bottom-4 right-4 w-16 h-16 border-b-4 border-r-4 border-yellow-500"></div>
+
               <div className="text-center w-full mt-8">
                   <h1 className="text-7xl font-black text-blue-900 tracking-tighter mb-4">CEOE</h1>
-                  <p className="text-sm tracking-[0.5em] font-bold text-gray-500 uppercase">Confederación Española de Organizaciones Empresariales</p>
-                  <div className="h-1 w-32 bg-yellow-500 mx-auto mt-8"></div>
+                  <p className="text-xs tracking-[0.5em] font-bold text-gray-500 uppercase">Confederación Española de Organizaciones Empresariales</p>
+                  <div className="h-0.5 w-32 bg-yellow-500 mx-auto mt-8"></div>
               </div>
 
-              <div className="text-center space-y-6 flex-grow flex flex-col justify-center">
+              <div className="text-center space-y-6 flex-grow flex flex-col justify-center w-full">
                   <h2 className="text-5xl font-serif text-gray-900 italic font-medium">Certificado de Cumplimiento</h2>
-                  <p className="text-2xl text-gray-600">Otorga el presente reconocimiento a</p>
+                  <p className="text-xl text-gray-500 font-light">Se otorga el presente reconocimiento a</p>
                   
-                  <div className="py-4">
-                      <h3 className="text-5xl font-bold text-blue-900 px-8 leading-tight">
+                  <div className="py-8 w-full">
+                      <h3 className="text-5xl font-bold text-blue-900 leading-tight">
                           {companyData.businessName}
                       </h3>
-                      <p className="text-sm text-gray-400 mt-2 uppercase tracking-wider">{companyData.sector} | {companyData.location}</p>
+                      <p className="text-sm text-gray-400 mt-4 uppercase tracking-widest font-bold">{companyData.sector} | {companyData.location}</p>
                   </div>
 
-                  <p className="text-xl text-gray-600 px-12 leading-relaxed max-w-2xl mx-auto">
+                  <p className="text-lg text-gray-600 px-12 leading-relaxed max-w-3xl mx-auto">
                       Por haber completado satisfactoriamente el<br/>
-                      <strong className="text-gray-900">Autodiagnóstico de Sostenibilidad y Objetivos ODS</strong>
+                      <strong className="text-gray-900 text-xl">Autodiagnóstico de Sostenibilidad y Objetivos ODS</strong>
                   </p>
                   
-                  <div className="mt-8 inline-flex items-center gap-8 bg-slate-50 border border-gray-200 px-12 py-6 rounded-xl mx-auto">
-                      <div className="text-center border-r border-gray-300 pr-8">
-                          <div className="text-xs text-gray-500 uppercase tracking-widest mb-1">Puntuación</div>
-                          <div className="text-5xl font-black text-blue-900">{globalScore}/100</div>
+                  <div className="mt-12 flex justify-center items-center gap-12">
+                      <div className="flex flex-col items-center">
+                          <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Puntuación Global</span>
+                          <span className="text-6xl font-black text-blue-900">{globalScore}/100</span>
                       </div>
-                      <div className="text-center">
-                          <div className="text-xs text-gray-500 uppercase tracking-widest mb-1">Nivel Alcanzado</div>
-                          <div className="text-3xl font-bold text-yellow-600 uppercase">{globalMaturityLabel}</div>
+                      <div className="w-px h-16 bg-gray-200"></div>
+                      <div className="flex flex-col items-center">
+                          <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Nivel Alcanzado</span>
+                          <span className="text-3xl font-bold text-yellow-600 uppercase">{globalMaturityLabel}</span>
                       </div>
                   </div>
               </div>
 
-              <div className="w-full grid grid-cols-2 gap-24 pt-8 border-t border-gray-200 mt-8 mb-8">
-                  <div className="text-center">
+              <div className="w-full grid grid-cols-2 gap-24 pt-8 border-t border-gray-100 mt-8 mb-4">
+                  <div className="text-center pl-8">
                       <p className="text-lg font-bold text-gray-900">{today}</p>
-                      <p className="text-xs text-gray-500 uppercase mt-2 font-bold tracking-wider">Fecha de Emisión</p>
+                      <p className="text-[10px] text-gray-400 uppercase mt-2 font-bold tracking-wider">Fecha de Emisión</p>
                   </div>
-                  <div className="text-center relative">
-                       <div className="h-16 w-48 mx-auto mb-2 flex items-end justify-center">
-                           {/* Simulated signature */}
-                          <span className="font-serif italic text-3xl text-blue-900 opacity-80" style={{fontFamily: '"Playfair Display", serif'}}>Director Sostenibilidad</span>
+                  <div className="text-center relative pr-8">
+                       <div className="h-12 w-48 mx-auto mb-2 flex items-end justify-center">
+                          <span className="font-serif italic text-2xl text-blue-900 opacity-80" style={{fontFamily: '"Playfair Display", serif'}}>Dirección Sostenibilidad</span>
                        </div>
                       <div className="h-px bg-gray-900 w-full mb-2"></div>
                       <p className="text-sm font-bold text-gray-900">CEOE España</p>
@@ -339,11 +403,23 @@ export const Results: React.FC<ResultsProps> = ({ answers, companyData, onReset 
                         <div className="text-xs text-blue-400">Sobre 100</div>
                     </div>
                     <div className="relative flex items-center justify-center w-32 h-32">
-                        <svg className="w-full h-full transform -rotate-90">
-                            <circle cx="64" cy="64" r="60" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-blue-800" />
-                            <circle cx="64" cy="64" r="60" stroke="currentColor" strokeWidth="8" fill="transparent" strokeDasharray={377} strokeDashoffset={377 - (377 * globalScore) / 100} className="text-yellow-500 transition-all duration-1000 ease-out" />
-                        </svg>
-                        <span className="absolute text-4xl font-black text-white">{globalScore}%</span>
+                        <PieChart width={128} height={128}>
+                            <Pie
+                                data={pieData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={50}
+                                outerRadius={64}
+                                startAngle={90}
+                                endAngle={-270}
+                                dataKey="value"
+                                stroke="none"
+                            >
+                                <Cell key="cell-0" fill="#EAB308" />
+                                <Cell key="cell-1" fill="rgba(255,255,255,0.2)" />
+                            </Pie>
+                        </PieChart>
+                        <span className="absolute text-3xl font-black text-white">{globalScore}%</span>
                     </div>
                 </div>
             </div>
