@@ -134,7 +134,7 @@ export const Results: React.FC<ResultsProps> = ({ answers, companyData, onReset 
          <div className="flex flex-col gap-8">
              
              {/* Top Card: Score */}
-             <div className="bg-slate-50 rounded-xl p-8 border border-gray-200 flex flex-row items-center justify-between h-[250px]">
+             <div className="bg-slate-50 rounded-xl p-8 border border-gray-200 flex flex-row items-center justify-between h-[220px]">
                 <div className="flex-1 pr-8">
                     <h4 className="text-gray-500 font-bold uppercase tracking-widest text-xs mb-3">Índice Global de Madurez</h4>
                     <div className="text-7xl font-black text-blue-900 mb-4">{globalScore}%</div>
@@ -171,46 +171,45 @@ export const Results: React.FC<ResultsProps> = ({ answers, companyData, onReset 
              </div>
 
              {/* Bottom Card: Radar Chart */}
-             <div className="flex flex-col items-center h-[500px]">
-                 <h4 className="text-center font-bold text-gray-600 mb-4 uppercase tracking-widest text-sm">Mapa de Competitividad</h4>
+             <div className="flex flex-col items-center h-[550px] justify-center">
+                 <h4 className="text-center font-bold text-gray-600 mb-6 uppercase tracking-widest text-sm">Mapa de Competitividad</h4>
                  
-                 <div className="w-full flex-grow relative">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={scores}>
-                            <PolarGrid stroke="#94a3b8" />
-                            <PolarAngleAxis 
-                                dataKey="name" 
-                                tick={{ fill: '#1e3a8a', fontSize: 12, fontWeight: 800 }} 
-                            />
-                            <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                            
-                            {/* Company Radar - No Animation */}
-                            <Radar 
-                                name="Su Empresa" 
-                                dataKey="score" 
-                                stroke="#1e3a8a" 
-                                strokeWidth={3} 
-                                fill="#1e3a8a" 
-                                fillOpacity={0.5} 
-                                isAnimationActive={false}
-                            />
-                            
-                            {/* Benchmark Radar - No Animation */}
-                            <Radar 
-                                name="Media" 
-                                dataKey="benchmark" 
-                                stroke="#cbd5e1" 
-                                strokeWidth={2} 
-                                fill="#cbd5e1" 
-                                fillOpacity={0.2} 
-                                strokeDasharray="5 5" 
-                                isAnimationActive={false}
-                            />
-                        </RadarChart>
-                    </ResponsiveContainer>
+                 <div className="w-full flex justify-center items-center">
+                    {/* FIXED DIMENSIONS FOR PRINT - Solving the visibility issue */}
+                    <RadarChart width={600} height={450} cx="50%" cy="50%" outerRadius="75%" data={scores}>
+                        <PolarGrid stroke="#94a3b8" />
+                        <PolarAngleAxis 
+                            dataKey="name" 
+                            tick={{ fill: '#1e3a8a', fontSize: 11, fontWeight: 800 }} 
+                        />
+                        <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                        
+                        {/* Company Radar - No Animation */}
+                        <Radar 
+                            name="Su Empresa" 
+                            dataKey="score" 
+                            stroke="#1e3a8a" 
+                            strokeWidth={3} 
+                            fill="#1e3a8a" 
+                            fillOpacity={0.4} 
+                            isAnimationActive={false}
+                        />
+                        
+                        {/* Benchmark Radar - No Animation */}
+                        <Radar 
+                            name="Media" 
+                            dataKey="benchmark" 
+                            stroke="#cbd5e1" 
+                            strokeWidth={2} 
+                            fill="#cbd5e1" 
+                            fillOpacity={0.2} 
+                            strokeDasharray="5 5" 
+                            isAnimationActive={false}
+                        />
+                    </RadarChart>
                  </div>
 
-                 <div className="flex gap-8 mt-4 pt-4 border-t border-gray-100 w-full justify-center">
+                 <div className="flex gap-8 mt-6 pt-4 border-t border-gray-100 w-full justify-center">
                     <div className="flex items-center text-xs font-bold text-blue-900">
                         <div className="w-3 h-3 bg-blue-900 mr-2 rounded-sm"></div> Su Empresa
                     </div>
@@ -288,60 +287,61 @@ export const Results: React.FC<ResultsProps> = ({ answers, companyData, onReset 
 
       {/* ---------------- PRINT: LAST PAGE (CERTIFICATE) ---------------- */}
       <div className="print-page certificate hidden print:flex">
-          <div className="w-full h-full border-[16px] border-double border-blue-900 p-16 flex flex-col items-center justify-between bg-white m-4 relative">
+          {/* Reduced margins and borders to fit A4 perfectly */}
+          <div className="w-full h-full border-[10px] border-double border-blue-900 p-8 flex flex-col items-center justify-between bg-white relative box-border">
               
               {/* Corner Ornaments */}
-              <div className="absolute top-4 left-4 w-16 h-16 border-t-4 border-l-4 border-yellow-500"></div>
-              <div className="absolute top-4 right-4 w-16 h-16 border-t-4 border-r-4 border-yellow-500"></div>
-              <div className="absolute bottom-4 left-4 w-16 h-16 border-b-4 border-l-4 border-yellow-500"></div>
-              <div className="absolute bottom-4 right-4 w-16 h-16 border-b-4 border-r-4 border-yellow-500"></div>
+              <div className="absolute top-3 left-3 w-12 h-12 border-t-2 border-l-2 border-yellow-500"></div>
+              <div className="absolute top-3 right-3 w-12 h-12 border-t-2 border-r-2 border-yellow-500"></div>
+              <div className="absolute bottom-3 left-3 w-12 h-12 border-b-2 border-l-2 border-yellow-500"></div>
+              <div className="absolute bottom-3 right-3 w-12 h-12 border-b-2 border-r-2 border-yellow-500"></div>
 
-              <div className="text-center w-full mt-8">
-                  <h1 className="text-7xl font-black text-blue-900 tracking-tighter mb-4">CEOE</h1>
-                  <p className="text-xs tracking-[0.5em] font-bold text-gray-500 uppercase">Confederación Española de Organizaciones Empresariales</p>
-                  <div className="h-0.5 w-32 bg-yellow-500 mx-auto mt-8"></div>
+              <div className="text-center w-full mt-4">
+                  <h1 className="text-6xl font-black text-blue-900 tracking-tighter mb-2">CEOE</h1>
+                  <p className="text-[10px] tracking-[0.5em] font-bold text-gray-500 uppercase">Confederación Española de Organizaciones Empresariales</p>
+                  <div className="h-0.5 w-24 bg-yellow-500 mx-auto mt-6"></div>
               </div>
 
-              <div className="text-center space-y-6 flex-grow flex flex-col justify-center w-full">
-                  <h2 className="text-5xl font-serif text-gray-900 italic font-medium">Certificado de Cumplimiento</h2>
-                  <p className="text-xl text-gray-500 font-light">Se otorga el presente reconocimiento a</p>
+              <div className="text-center space-y-4 flex-grow flex flex-col justify-center w-full">
+                  <h2 className="text-4xl font-serif text-gray-900 italic font-medium">Certificado de Cumplimiento</h2>
+                  <p className="text-lg text-gray-500 font-light">Se otorga el presente reconocimiento a</p>
                   
-                  <div className="py-8 w-full">
-                      <h3 className="text-5xl font-bold text-blue-900 leading-tight">
+                  <div className="py-6 w-full">
+                      <h3 className="text-4xl font-bold text-blue-900 leading-tight px-8">
                           {companyData.businessName}
                       </h3>
-                      <p className="text-sm text-gray-400 mt-4 uppercase tracking-widest font-bold">{companyData.sector} | {companyData.location}</p>
+                      <p className="text-xs text-gray-400 mt-3 uppercase tracking-widest font-bold">{companyData.sector} | {companyData.location}</p>
                   </div>
 
-                  <p className="text-lg text-gray-600 px-12 leading-relaxed max-w-3xl mx-auto">
+                  <p className="text-base text-gray-600 px-8 leading-relaxed max-w-2xl mx-auto">
                       Por haber completado satisfactoriamente el<br/>
-                      <strong className="text-gray-900 text-xl">Autodiagnóstico de Sostenibilidad y Objetivos ODS</strong>
+                      <strong className="text-gray-900 text-lg">Autodiagnóstico de Sostenibilidad y Objetivos ODS</strong>
                   </p>
                   
-                  <div className="mt-12 flex justify-center items-center gap-12">
+                  <div className="mt-8 flex justify-center items-center gap-12 bg-gray-50 py-6 rounded-lg mx-12 border border-gray-100">
                       <div className="flex flex-col items-center">
-                          <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Puntuación Global</span>
-                          <span className="text-6xl font-black text-blue-900">{globalScore}/100</span>
+                          <span className="text-[9px] text-gray-400 uppercase tracking-widest mb-1">Puntuación Global</span>
+                          <span className="text-5xl font-black text-blue-900">{globalScore}/100</span>
                       </div>
-                      <div className="w-px h-16 bg-gray-200"></div>
+                      <div className="w-px h-12 bg-gray-300"></div>
                       <div className="flex flex-col items-center">
-                          <span className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Nivel Alcanzado</span>
-                          <span className="text-3xl font-bold text-yellow-600 uppercase">{globalMaturityLabel}</span>
+                          <span className="text-[9px] text-gray-400 uppercase tracking-widest mb-1">Nivel Alcanzado</span>
+                          <span className="text-2xl font-bold text-yellow-600 uppercase">{globalMaturityLabel}</span>
                       </div>
                   </div>
               </div>
 
-              <div className="w-full grid grid-cols-2 gap-24 pt-8 border-t border-gray-100 mt-8 mb-4">
-                  <div className="text-center pl-8">
-                      <p className="text-lg font-bold text-gray-900">{today}</p>
-                      <p className="text-[10px] text-gray-400 uppercase mt-2 font-bold tracking-wider">Fecha de Emisión</p>
+              <div className="w-full grid grid-cols-2 gap-16 pt-6 border-t border-gray-100 mt-6 mb-2">
+                  <div className="text-center pl-4">
+                      <p className="text-base font-bold text-gray-900">{today}</p>
+                      <p className="text-[9px] text-gray-400 uppercase mt-1 font-bold tracking-wider">Fecha de Emisión</p>
                   </div>
-                  <div className="text-center relative pr-8">
-                       <div className="h-12 w-48 mx-auto mb-2 flex items-end justify-center">
-                          <span className="font-serif italic text-2xl text-blue-900 opacity-80" style={{fontFamily: '"Playfair Display", serif'}}>Dirección Sostenibilidad</span>
+                  <div className="text-center relative pr-4">
+                       <div className="h-10 w-40 mx-auto mb-1 flex items-end justify-center">
+                          <span className="font-serif italic text-xl text-blue-900 opacity-80" style={{fontFamily: '"Playfair Display", serif'}}>Dirección Sostenibilidad</span>
                        </div>
-                      <div className="h-px bg-gray-900 w-full mb-2"></div>
-                      <p className="text-sm font-bold text-gray-900">CEOE España</p>
+                      <div className="h-px bg-gray-900 w-full mb-1"></div>
+                      <p className="text-xs font-bold text-gray-900">CEOE España</p>
                   </div>
               </div>
           </div>
