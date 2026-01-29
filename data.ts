@@ -38,6 +38,29 @@ export const SECTIONS: Section[] = [
   }
 ];
 
+export const RECOMMENDATIONS: Record<string, { initial: string; advanced: string }> = {
+    gestion: {
+        initial: "Es prioritario formalizar su compromiso. Comience definiendo una política sencilla de sostenibilidad y designe a un responsable interno, aunque no sea a tiempo completo.",
+        advanced: "Su gestión es sólida. Para liderar, integre los ODS en el sistema de retribución variable de la dirección y publique una Memoria de Sostenibilidad auditada."
+    },
+    personas: {
+        initial: "Asegure el cumplimiento normativo básico (registro horario, planes de igualdad si aplica). Formalice los procesos de selección para evitar sesgos.",
+        advanced: "Avance hacia la excelencia: implemente programas de bienestar 360º, fomente el voluntariado corporativo y mida el clima laboral anualmente."
+    },
+    planeta: {
+        initial: "Empiece por medir. Lleve un registro de facturas de luz y agua en un Excel. Identifique sus principales fuentes de residuos y asegure su correcta separación.",
+        advanced: "Calcule su Huella de Carbono (Alcance 1, 2 y 3) y establezca objetivos de reducción basados en la ciencia (SBTi). Valore la instalación de autoconsumo."
+    },
+    prosperidad: {
+        initial: "Controle su flujo de caja y digitalice la gestión básica (facturación). Priorice proveedores locales para fortalecer su cadena de valor cercana.",
+        advanced: "Incorpore criterios ESG en la homologación de proveedores. Innove en productos/servicios circulares y mida su impacto económico indirecto."
+    },
+    alianzas: {
+        initial: "Acérquese a su asociación empresarial sectorial. Identifique una entidad social local con la que colaborar puntualmente.",
+        advanced: "Lidere proyectos sectoriales de sostenibilidad. Establezca alianzas estratégicas a largo plazo con ONGs o universidades para innovación social."
+    }
+};
+
 export const OPTIONS: QuestionOption[] = [
   { value: 0, label: 'No iniciado', description: 'No existe / no se hace' },
   { value: 1, label: 'En proceso', description: 'En diseño, piloto o acciones puntuales' },

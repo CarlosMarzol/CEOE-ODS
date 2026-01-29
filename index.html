@@ -18,19 +18,24 @@
       .print-only { display: none; }
 
       @media print {
-        @page { margin: 1cm; size: A4; }
+        @page { margin: 0; size: A4; } /* Zero margin for full cover page */
         body { 
             -webkit-print-color-adjust: exact !important; 
             print-color-adjust: exact !important; 
             background: white !important;
             font-size: 11pt;
+            margin: 0;
+            padding: 0;
         }
+        
+        /* Content margins applied to specific containers instead of body */
+        .max-w-7xl { padding: 1.5cm !important; width: 100% !important; max-width: none !important; }
         
         /* Hide UI elements */
         nav, header, footer, button, .no-print { display: none !important; }
         
         /* Show print specific elements */
-        .print-only { display: block !important; }
+        .print-only { display: flex !important; }
         
         /* Remove shadows and simplify borders */
         .shadow-sm, .shadow-md, .shadow-lg { box-shadow: none !important; }
@@ -38,23 +43,25 @@
         /* Layout adjustments */
         #root { width: 100%; }
         main { width: 100%; margin: 0; padding: 0; }
-        .max-w-7xl, .max-w-6xl { max-width: none !important; padding: 0 !important; margin: 0 !important; }
         
         /* Ensure grids print somewhat nicely */
         .grid.lg\:grid-cols-2 { display: grid !important; grid-template-columns: 1fr 1fr; gap: 2rem; }
 
         /* Ensure texts are black/dark for readability */
-        h1, h2, h3, p, span { color: black !important; }
+        h1, h2, h3, p, span, div { color: black; }
         
-        /* Exception for CEOE Blue backgrounds (headers) */
+        /* Force background colors and text colors for important visual elements */
         .bg-blue-900, .bg-blue-900 * { 
+            background-color: #002E6D !important;
             color: white !important; 
             -webkit-print-color-adjust: exact;
         }
         .text-blue-900 { color: #002E6D !important; }
+        .text-white { color: white !important; }
 
         /* Avoid breaks inside important elements */
         .page-break-avoid { page-break-inside: avoid; }
+        .break-after-page { break-after: page; page-break-after: always; }
       }
     </style>
   <script type="importmap">

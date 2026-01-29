@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AssessmentState, CompanyData } from './types';
 import { SECTIONS } from './data';
 import { Welcome } from './views/Welcome';
 import { CompanyInfo } from './views/CompanyInfo';
 import { Assessment } from './views/Assessment';
 import { Results } from './views/Results';
-import { Building } from 'lucide-react';
+
+const STORAGE_KEY = 'ceoe_ods_assessment_state';
 
 const INITIAL_STATE: AssessmentState = {
   step: 'welcome',
@@ -20,7 +21,31 @@ const INITIAL_STATE: AssessmentState = {
 };
 
 export default function App() {
-  const [state, setState] = useState<AssessmentState>(INITIAL_STATE);
+  const [state, setState] = useState<AssessmentState>(() => {
+    // Attempt to load from local storage
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error('Error loading state', e);
+    }
+    return INITIAL_STATE;
+  });
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Save to local storage on change
+  useEffect(() => {
+    if (isClient) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+  }, [state, isClient]);
 
   const handleStart = () => {
     setState(prev => ({ ...prev, step: 'company-info' }));
@@ -43,7 +68,6 @@ export default function App() {
 
   const handleNextSection = () => {
     if (state.currentSectionIndex < SECTIONS.length - 1) {
-      // Scroll to top
       window.scrollTo(0, 0);
       setState(prev => ({
         ...prev,
@@ -67,8 +91,12 @@ export default function App() {
   const handleReset = () => {
     if (window.confirm('¿Está seguro de que desea reiniciar? Se perderán todos los datos.')) {
       setState(INITIAL_STATE);
+      localStorage.removeItem(STORAGE_KEY);
+      window.scrollTo(0, 0);
     }
   };
+
+  if (!isClient) return null;
 
   // Render Logic
   const renderContent = () => {
@@ -99,7 +127,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 font-sans text-slate-900">
       {/* CEOE Corporate Header */}
-      <header className="bg-white border-b-4 border-blue-900 sticky top-0 z-20 shadow-sm">
+      <header className="bg-white border-b-4 border-blue-900 sticky top-0 z-20 shadow-sm print:hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center cursor-pointer gap-3" onClick={() => state.step !== 'welcome' && handleReset()}>
             {/* Logo simulation */}
@@ -130,7 +158,7 @@ export default function App() {
       </main>
 
       {/* CEOE Footer */}
-      <footer className="bg-slate-900 text-white py-8 mt-auto">
+      <footer className="bg-slate-900 text-white py-8 mt-auto print:hidden">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left">
              <span className="text-2xl font-black tracking-tighter">CEOE</span>
