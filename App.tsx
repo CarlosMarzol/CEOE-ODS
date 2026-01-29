@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { AssessmentState, CompanyData } from './types';
-import { SECTIONS } from './data';
+import { SECTIONS, QUESTIONS } from './data';
 import { Welcome } from './views/Welcome';
 import { CompanyInfo } from './views/CompanyInfo';
 import { Assessment } from './views/Assessment';
 import { Results } from './views/Results';
+import { FlaskConical } from 'lucide-react';
 
 const STORAGE_KEY = 'ceoe_ods_assessment_state';
 
@@ -96,6 +97,30 @@ export default function App() {
     }
   };
 
+  // DEV TOOL: Fill randomly
+  const handleDebugFill = () => {
+    const newAnswers: Record<string, number> = {};
+    QUESTIONS.forEach(q => {
+        // Random value between 0 and 3
+        newAnswers[q.id] = Math.floor(Math.random() * 4);
+    });
+    
+    // Ensure minimal company data if skipping that step
+    const newCompanyData = { ...state.companyData };
+    if (!newCompanyData.businessName) newCompanyData.businessName = "Empresa Beta de Prueba";
+    if (!newCompanyData.size) newCompanyData.size = "Mediana (50-249)";
+    if (!newCompanyData.sector) newCompanyData.sector = "C. Industria manufacturera";
+    if (!newCompanyData.location) newCompanyData.location = "Madrid";
+    if (!newCompanyData.role) newCompanyData.role = "Dirección";
+
+    setState(prev => ({
+        ...prev,
+        answers: newAnswers,
+        companyData: newCompanyData,
+        step: 'results'
+    }));
+  };
+
   if (!isClient) return null;
 
   // Render Logic
@@ -141,14 +166,28 @@ export default function App() {
             </span>
           </div>
           
-          {state.step === 'assessment' && (
-             <div className="hidden md:flex flex-col items-end">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Progreso</span>
-                <span className="text-sm font-bold text-blue-900">
-                  Sección {state.currentSectionIndex + 1} / {SECTIONS.length}
-                </span>
-             </div>
-          )}
+          <div className="flex items-center gap-4">
+            {/* DEBUG BUTTON */}
+            {state.step !== 'results' && (
+                <button 
+                    onClick={handleDebugFill}
+                    className="flex items-center gap-2 px-3 py-1 bg-gray-100 text-gray-600 rounded text-xs font-bold hover:bg-gray-200 border border-gray-300 transition-colors"
+                    title="Rellenar aleatoriamente (Modo Pruebas)"
+                >
+                    <FlaskConical size={14} />
+                    <span className="hidden sm:inline">DEMO: Rellenar</span>
+                </button>
+            )}
+
+            {state.step === 'assessment' && (
+                <div className="hidden md:flex flex-col items-end">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Progreso</span>
+                    <span className="text-sm font-bold text-blue-900">
+                    Sección {state.currentSectionIndex + 1} / {SECTIONS.length}
+                    </span>
+                </div>
+            )}
+          </div>
         </div>
       </header>
 
