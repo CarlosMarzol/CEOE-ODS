@@ -12,70 +12,99 @@
         font-family: 'Inter', sans-serif;
         background-color: #f8fafc;
       }
-      /* Custom CEOE Blue override if needed, using Tailwind slate-900/blue-900 mostly */
+      /* Custom CEOE Blue override */
       .ceoe-blue { color: #002E6D; }
       .bg-ceoe-blue { background-color: #002E6D; }
 
-      .print-only { display: none; }
-      
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
       }
       .animate-fadeIn {
         animation: fadeIn 0.5s ease-out forwards;
-        opacity: 0; /* Start hidden */
+        opacity: 0; 
       }
 
+      /* PRINT SPECIFIC STYLES */
       @media print {
-        @page { margin: 0; size: A4; } /* Zero margin for full cover page */
+        @page { 
+            size: A4; 
+            margin: 0; 
+        }
+        
         body { 
+            margin: 0; 
+            padding: 0;
+            background-color: white !important;
             -webkit-print-color-adjust: exact !important; 
             print-color-adjust: exact !important; 
-            background: white !important;
-            font-size: 11pt;
-            margin: 0;
+        }
+
+        /* Hide interactive elements */
+        header, footer, button, nav, .no-print { 
+            display: none !important; 
+        }
+
+        /* Reset Containers for Print */
+        #root, main, .max-w-7xl { 
+            width: 100% !important; 
+            max-width: 100% !important; 
+            margin: 0 !important; 
+            padding: 0 !important; 
+            overflow: visible !important;
+        }
+
+        /* Typography fixes for print */
+        body { font-size: 11pt; color: #1a1a1a; }
+        h1 { font-size: 24pt; }
+        h2 { font-size: 18pt; }
+        p { line-height: 1.5; }
+
+        /* Page Breaks Control */
+        .print-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm; /* Standard margin inside the page */
+            margin: 0 auto;
+            background: white;
+            page-break-after: always;
+            position: relative;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .print-page.cover {
             padding: 0;
+            background-color: #002E6D !important; /* Force Blue Background */
+            color: white !important;
+            justify-content: center;
+        }
+
+        .print-page.certificate {
+            padding: 0;
+            justify-content: center;
+        }
+
+        .page-break-avoid { 
+            page-break-inside: avoid; 
+        }
+
+        /* Restore visibility for print specific classes */
+        .print-only { 
+            display: block !important; 
         }
         
-        /* Content margins applied to specific containers instead of body */
-        .max-w-7xl { padding: 1.5cm !important; width: 100% !important; max-width: none !important; }
-        
-        /* Hide UI elements */
-        nav, header, footer, button, .no-print { display: none !important; }
-        
-        /* Show print specific elements */
-        .print-only { display: flex !important; }
-        
-        /* Remove shadows and simplify borders */
-        .shadow-sm, .shadow-md, .shadow-lg { box-shadow: none !important; }
-        
-        /* Layout adjustments */
-        #root { width: 100%; }
-        main { width: 100%; margin: 0; padding: 0; }
-        
-        /* Ensure grids print somewhat nicely */
-        .grid.lg\:grid-cols-2 { display: grid !important; grid-template-columns: 1fr 1fr; gap: 2rem; }
-
-        /* Ensure texts are black/dark for readability */
-        h1, h2, h3, h4, p, span, div, li { color: black; }
-        
-        /* Force background colors and text colors for important visual elements */
-        .bg-blue-900, .bg-blue-900 * { 
-            background-color: #002E6D !important;
-            color: white !important; 
-            -webkit-print-color-adjust: exact;
+        /* Hide screen-only elements */
+        .screen-only {
+            display: none !important;
         }
-        .text-blue-900 { color: #002E6D !important; }
-        .text-white { color: white !important; }
 
-        /* Specific print hacks for Recharts */
-        .recharts-responsive-container { height: 400px !important; }
-        
-        /* Avoid breaks inside important elements */
-        .page-break-avoid { page-break-inside: avoid; }
-        .break-after-page { break-after: page; page-break-after: always; }
-        .break-before-page { break-before: page; page-break-before: always; }
+        /* Chart Sizing */
+        .recharts-responsive-container {
+            height: 350px !important;
+            width: 100% !important;
+        }
       }
     </style>
   <script type="importmap">
