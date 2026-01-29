@@ -3,126 +3,143 @@ import { Section, Question, QuestionOption } from './types';
 export const SECTIONS: Section[] = [
   {
     id: 'gestion',
-    title: 'Gestión',
-    description: 'Estrategia, ética y buen gobierno para generar confianza.',
+    title: 'Gestión y Estrategia',
+    description: 'Liderazgo, ética y buen gobierno corporativo.',
     color: 'bg-yellow-500',
     icon: 'Briefcase'
   },
   {
     id: 'personas',
     title: 'Personas',
-    description: 'Protección, desarrollo e implicación de las personas.',
+    description: 'Condiciones laborales, igualdad y desarrollo del talento.',
     color: 'bg-orange-500',
     icon: 'Users'
   },
   {
     id: 'planeta',
     title: 'Planeta',
-    description: 'Gestión de impactos ambientales y mejora continua.',
+    description: 'Gestión ambiental, economía circular y descarbonización.',
     color: 'bg-teal-600',
     icon: 'Globe'
   },
   {
     id: 'prosperidad',
     title: 'Prosperidad',
-    description: 'Impacto económico, innovación y relación con el entorno.',
+    description: 'Innovación, impacto económico y cadena de valor.',
     color: 'bg-blue-600',
     icon: 'TrendingUp'
   },
   {
     id: 'alianzas',
     title: 'Alianzas',
-    description: 'Colaboración con otras entidades para objetivos comunes.',
+    description: 'Colaboración institucional y compromiso social.',
     color: 'bg-indigo-600',
     icon: 'Handshake'
   }
 ];
 
-export const RECOMMENDATIONS: Record<string, { initial: string; advanced: string }> = {
+export const MATURITY_LEVELS = {
+    inicial: { label: 'Inicial', min: 0, max: 25 },
+    proceso: { label: 'En Proceso', min: 26, max: 50 },
+    avanzado: { label: 'Avanzado', min: 51, max: 80 },
+    lider: { label: 'Líder', min: 81, max: 100 }
+};
+
+export const RECOMMENDATIONS: Record<string, Record<string, string>> = {
     gestion: {
-        initial: "Es prioritario formalizar su compromiso. Comience definiendo una política sencilla de sostenibilidad y designe a un responsable interno, aunque no sea a tiempo completo.",
-        advanced: "Su gestión es sólida. Para liderar, integre los ODS en el sistema de retribución variable de la dirección y publique una Memoria de Sostenibilidad auditada."
+        inicial: "Prioridad: Redacte un documento sencillo de 'Compromiso con la Sostenibilidad' y asígnele la responsabilidad a una persona del equipo, aunque no sea a tiempo completo.",
+        proceso: "Formalice su estrategia: Defina 3 objetivos anuales de sostenibilidad (ej. reducir papel, formación empleados) y revíselos semestralmente en comité de dirección.",
+        avanzado: "Integre la sostenibilidad en el núcleo: Vincule parte de la retribución variable a objetivos ESG y elabore un Código Ético con canal de denuncias.",
+        lider: "Excelencia: Publique una Memoria de Sostenibilidad verificada externamente y lidere foros sectoriales sobre ética empresarial y transparencia."
     },
     personas: {
-        initial: "Asegure el cumplimiento normativo básico (registro horario, planes de igualdad si aplica). Formalice los procesos de selección para evitar sesgos.",
-        advanced: "Avance hacia la excelencia: implemente programas de bienestar 360º, fomente el voluntariado corporativo y mida el clima laboral anualmente."
+        inicial: "Cumplimiento: Asegure estrictamente el registro horario y la prevención de riesgos. Formalice los contratos y descripciones de puesto.",
+        proceso: "Desarrollo: Implemente un plan de formación anual detectando necesidades reales. Active un protocolo de prevención del acoso conocido por todos.",
+        avanzado: "Bienestar: Mida el clima laboral con encuestas anónimas y ofrezca medidas de flexibilidad horaria y teletrabajo superiores a la ley.",
+        lider: "Talento Diverso: Implemente currículum ciego en selección, programas de liderazgo femenino y auditorías de brecha salarial proactivas."
     },
     planeta: {
-        initial: "Empiece por medir. Lleve un registro de facturas de luz y agua en un Excel. Identifique sus principales fuentes de residuos y asegure su correcta separación.",
-        advanced: "Calcule su Huella de Carbono (Alcance 1, 2 y 3) y establezca objetivos de reducción basados en la ciencia (SBTi). Valore la instalación de autoconsumo."
+        inicial: "Control Básico: Recopile todas las facturas de energía, agua y combustible en un Excel para tener una línea base de consumo.",
+        proceso: "Eficiencia: Cambie iluminación a LED, instale sensores de presencia y segregue residuos más allá de lo obligatorio. Sensibilice a la plantilla.",
+        avanzado: "Medición de Impacto: Calcule su Huella de Carbono (Alcance 1 y 2) y contrate energía eléctrica con certificado de origen 100% renovable.",
+        lider: "Net Zero: Establezca objetivos de reducción basados en la ciencia (SBTi), compense emisiones residuales e innove en ecodiseño de productos."
     },
     prosperidad: {
-        initial: "Controle su flujo de caja y digitalice la gestión básica (facturación). Priorice proveedores locales para fortalecer su cadena de valor cercana.",
-        advanced: "Incorpore criterios ESG en la homologación de proveedores. Innove en productos/servicios circulares y mida su impacto económico indirecto."
+        inicial: "Orden Financiero: Digitalice su facturación y asegure el control de flujo de caja. Pague a proveedores en plazo para sostener la cadena.",
+        proceso: "Digitalización: Implante un CRM/ERP básico. Priorice proveedores locales para generar riqueza en su entorno inmediato.",
+        avanzado: "Innovación: Dedique presupuesto a I+D+i para desarrollar productos/servicios más sostenibles. Evalúe a proveedores con criterios ESG.",
+        lider: "Valor Compartido: Mida su contribución al PIB local y el retorno social de sus inversiones (SROI). Desarrolle modelos de negocio circulares."
     },
     alianzas: {
-        initial: "Acérquese a su asociación empresarial sectorial. Identifique una entidad social local con la que colaborar puntualmente.",
-        advanced: "Lidere proyectos sectoriales de sostenibilidad. Establezca alianzas estratégicas a largo plazo con ONGs o universidades para innovación social."
+        inicial: "Conexión: Asóciese a su organización empresarial sectorial o territorial. Participe en eventos de networking locales.",
+        proceso: "Colaboración Puntual: Realice alguna acción de voluntariado corporativo o donación a una entidad social local una vez al año.",
+        avanzado: "Alianzas Estratégicas: Firme convenios estables con centros educativos (FP Dual) o ONGs para proyectos de integración laboral.",
+        lider: "Liderazgo Social: Impulse proyectos multi-actor (Empresa-Universidad-Administración) para resolver retos sociales complejos del entorno."
     }
 };
 
 export const OPTIONS: QuestionOption[] = [
-  { value: 0, label: 'No iniciado', description: 'No existe / no se hace' },
-  { value: 1, label: 'En proceso', description: 'En diseño, piloto o acciones puntuales' },
-  { value: 2, label: 'Implantado', description: 'Se aplica de forma habitual' },
-  { value: 3, label: 'Consolidado', description: 'Se aplica sistemáticamente y se revisa para mejorar' },
-  { value: -1, label: 'No aplica / No lo sé', description: '' },
+  { value: 0, label: 'No iniciado', description: 'No existe o no se hace.' },
+  { value: 1, label: 'En proceso', description: 'Se están dando los primeros pasos.' },
+  { value: 2, label: 'Implantado', description: 'Se aplica de forma habitual.' },
+  { value: 3, label: 'Consolidado', description: 'Sistemático, se mide y mejora.' },
+  { value: -1, label: 'No aplica', description: 'No relevante para mi actividad.' },
 ];
 
 export const QUESTIONS: Question[] = [
   // GESTIÓN
-  { id: 'g1', category: 'gestion', text: 'Estrategia/plan de sostenibilidad: en su empresa existe una hoja de ruta (objetivos, acciones y responsables).' },
-  { id: 'g2', category: 'gestion', text: 'Objetivos y seguimiento: en su empresa se definen objetivos de sostenibilidad y se revisan de forma periódica.' },
-  { id: 'g3', category: 'gestion', text: 'ODS prioritarios: en su empresa están identificados los ODS más relevantes y se han traducido en acciones.' },
-  { id: 'g4', category: 'gestion', text: 'Código ético e integridad: existe un código ético o políticas de integridad (incluye prevención de corrupción).' },
-  { id: 'g5', category: 'gestion', text: 'Políticas sociales básicas: existen políticas o medidas básicas en igualdad/no discriminación y condiciones laborales.' },
-  { id: 'g6', category: 'gestion', text: 'Política ambiental básica: existen compromisos o políticas ambientales (energía, residuos, compras, etc.).' },
-  { id: 'g7', category: 'gestion', text: 'Indicadores y responsables: se hace seguimiento con indicadores de sostenibilidad y hay responsables definidos.' },
-  { id: 'g8', category: 'gestion', text: 'Comunicación/reporte: se comunican los avances en sostenibilidad (internamente y/o a públicos externos).' },
-  { id: 'g9', category: 'gestion', text: 'Compras sostenibles: se aplican criterios de sostenibilidad en compras y contratación.' },
+  { id: 'g1', category: 'gestion', text: 'Estrategia: ¿Existe una hoja de ruta con objetivos de sostenibilidad claros?' },
+  { id: 'g2', category: 'gestion', text: 'Seguimiento: ¿Se revisan periódicamente los indicadores de desempeño no financiero?' },
+  { id: 'g3', category: 'gestion', text: 'ODS: ¿Ha identificado qué ODS son prioritarios para su negocio?' },
+  { id: 'g4', category: 'gestion', text: 'Ética: ¿Dispone de un Código Ético o de Conducta conocido por la plantilla?' },
+  { id: 'g5', category: 'gestion', text: 'Responsables: ¿Hay una persona o comité asignado para impulsar estos temas?' },
+  { id: 'g6', category: 'gestion', text: 'Reporte: ¿Comunica sus avances en sostenibilidad (web, memoria, redes)?' },
+  { id: 'g7', category: 'gestion', text: 'Compras: ¿Aplica criterios de sostenibilidad al seleccionar proveedores?' },
+  { id: 'g8', category: 'gestion', text: 'Cumplimiento: ¿Tiene un sistema para asegurar el cumplimiento legal actualizado?' },
+  { id: 'g9', category: 'gestion', text: 'Certificaciones: ¿Cuenta con certificaciones (ISO 9001, 14001, B Corp, etc.)?' },
   
   // PERSONAS
-  { id: 'p1', category: 'personas', text: 'Selección y contratación: los procesos son transparentes y con criterios objetivos.' },
-  { id: 'p2', category: 'personas', text: 'Estabilidad del empleo: se hace seguimiento de rotación/temporalidad y se aplican acciones de mejora.' },
-  { id: 'p3', category: 'personas', text: 'Jornada y horas extra: se registra la jornada y se gestionan las horas extra conforme a normativa.' },
-  { id: 'p4', category: 'personas', text: 'Conciliación y flexibilidad: existen medidas de conciliación y flexibilidad y criterios equitativos.' },
-  { id: 'p5', category: 'personas', text: 'Formación y desarrollo: se planifica la formación (plan anual) y se revisan necesidades.' },
-  { id: 'p6', category: 'personas', text: 'Igualdad y no discriminación: existe una política o medidas para prevenir discriminación y promover igualdad.' },
-  { id: 'p7', category: 'personas', text: 'Prevención del acoso: existe protocolo y canal confidencial para prevenir y actuar ante acoso.' },
-  { id: 'p8', category: 'personas', text: 'Retribución y equidad salarial: hay criterios retributivos definidos y se revisa la equidad.' },
-  { id: 'p9', category: 'personas', text: 'Gestión de PRL: están definidos roles y responsabilidades y se conocen.' },
-  { id: 'p10', category: 'personas', text: 'Evaluación de riesgos: la evaluación de riesgos está actualizada y existe plan preventivo.' },
+  { id: 'p1', category: 'personas', text: 'Selección: ¿Son los procesos de selección transparentes y libres de sesgos?' },
+  { id: 'p2', category: 'personas', text: 'Estabilidad: ¿Fomenta la contratación indefinida y reduce la temporalidad?' },
+  { id: 'p3', category: 'personas', text: 'Conciliación: ¿Ofrece medidas de flexibilidad horaria o teletrabajo?' },
+  { id: 'p4', category: 'personas', text: 'Formación: ¿Tiene un plan de formación financiado por la empresa?' },
+  { id: 'p5', category: 'personas', text: 'Igualdad: ¿Aplica medidas efectivas para garantizar la igualdad de oportunidades?' },
+  { id: 'p6', category: 'personas', text: 'Acoso: ¿Existe un protocolo contra el acoso laboral y sexual?' },
+  { id: 'p7', category: 'personas', text: 'Salud: ¿Va más allá de la ley en vigilancia de la salud y bienestar?' },
+  { id: 'p8', category: 'personas', text: 'Brecha Salarial: ¿Analiza y corrige posibles desigualdades salariales?' },
+  { id: 'p9', category: 'personas', text: 'Diversidad: ¿Tiene políticas activas de inclusión (discapacidad, edad, etc.)?' },
+  { id: 'p10', category: 'personas', text: 'Clima: ¿Mide la satisfacción de los empleados regularmente?' },
 
   // PLANETA
-  { id: 'pl1', category: 'planeta', text: 'Energía: se registra y revisa el consumo energético (facturas, contadores).' },
-  { id: 'pl2', category: 'planeta', text: 'Eficiencia energética: se aplican medidas para reducir el consumo (equipos, iluminación, hábitos).' },
-  { id: 'pl3', category: 'planeta', text: 'Electricidad renovable: se utiliza electricidad de origen renovable (autoconsumo o contrato).' },
-  { id: 'pl4', category: 'planeta', text: 'Agua: se registra y revisa el consumo de agua.' },
-  { id: 'pl5', category: 'planeta', text: 'Huella de carbono: se estiman o calculan emisiones y se documenta el método.' },
-  { id: 'pl6', category: 'planeta', text: 'Movilidad: se promueve movilidad sostenible (flota, rutas, viajes, teletrabajo).' },
-  { id: 'pl7', category: 'planeta', text: 'Residuos: se separan y gestionan residuos con gestores/autorizaciones.' },
-  { id: 'pl8', category: 'planeta', text: 'Residuos peligrosos: existe segregación, almacenamiento seguro y gestión conforme a normativa.' },
-  { id: 'pl9', category: 'planeta', text: 'Plásticos de un solo uso: se reducen o sustituyen plásticos de un solo uso.' },
-  { id: 'pl10', category: 'planeta', text: 'Compras con criterios ambientales: se incorporan criterios ambientales en compras.' },
+  { id: 'pl1', category: 'planeta', text: 'Energía: ¿Monitoriza el consumo eléctrico y de combustibles?' },
+  { id: 'pl2', category: 'planeta', text: 'Eficiencia: ¿Ha implementado medidas de ahorro (LEDs, sensores, aislamiento)?' },
+  { id: 'pl3', category: 'planeta', text: 'Renovables: ¿Consume energía renovable (contrato verde o autoconsumo)?' },
+  { id: 'pl4', category: 'planeta', text: 'Agua: ¿Controla el consumo de agua y aplica medidas de ahorro?' },
+  { id: 'pl5', category: 'planeta', text: 'Carbono: ¿Calcula la huella de carbono de su actividad?' },
+  { id: 'pl6', category: 'planeta', text: 'Movilidad: ¿Fomenta el transporte sostenible entre empleados o en logística?' },
+  { id: 'pl7', category: 'planeta', text: 'Residuos: ¿Separa correctamente los residuos para su reciclaje?' },
+  { id: 'pl8', category: 'planeta', text: 'Peligrosos: ¿Gestiona adecuadamente los residuos peligrosos/químicos?' },
+  { id: 'pl9', category: 'planeta', text: 'Circularidad: ¿Diseña productos/servicios pensando en su vida útil y reciclaje?' },
+  { id: 'pl10', category: 'planeta', text: 'Insumos: ¿Prioriza materiales reciclados o sostenibles?' },
 
   // PROSPERIDAD
-  { id: 'pr1', category: 'prosperidad', text: 'Viabilidad económica: se realiza seguimiento de resultados, costes y liquidez.' },
-  { id: 'pr2', category: 'prosperidad', text: 'Decisiones basadas en datos: se utilizan datos económico-financieros para planificar.' },
-  { id: 'pr3', category: 'prosperidad', text: 'Innovación en productos/servicios: existe proceso para identificar e introducir mejoras.' },
-  { id: 'pr4', category: 'prosperidad', text: 'Digitalización: se usan herramientas digitales para mejorar gestión y productividad.' },
-  { id: 'pr5', category: 'prosperidad', text: 'Clientes: existen prácticas de transparencia, calidad, atención responsable y reclamaciones.' },
-  { id: 'pr6', category: 'prosperidad', text: 'Proveedores locales: se prioriza o fomenta la contratación de proveedores locales.' },
-  { id: 'pr7', category: 'prosperidad', text: 'Pago responsable: se respetan plazos de pago y prácticas comerciales justas.' },
-  { id: 'pr8', category: 'prosperidad', text: 'Impacto local: se identifica y/o hace seguimiento del impacto económico en el entorno.' },
+  { id: 'pr1', category: 'prosperidad', text: 'Viabilidad: ¿Realiza presupuestos anuales y control de gestión?' },
+  { id: 'pr2', category: 'prosperidad', text: 'Datos: ¿Toma decisiones basadas en datos financieros actualizados?' },
+  { id: 'pr3', category: 'prosperidad', text: 'Innovación: ¿Dedica recursos a mejorar productos o procesos?' },
+  { id: 'pr4', category: 'prosperidad', text: 'Digital: ¿Utiliza herramientas digitales para la gestión (ERP, CRM)?' },
+  { id: 'pr5', category: 'prosperidad', text: 'Calidad: ¿Tiene procesos para asegurar la calidad y satisfacción del cliente?' },
+  { id: 'pr6', category: 'prosperidad', text: 'Local: ¿Prioriza proveedores locales (Km 0) cuando es posible?' },
+  { id: 'pr7', category: 'prosperidad', text: 'Pagos: ¿Cumple rigurosamente los plazos de pago legales?' },
+  { id: 'pr8', category: 'prosperidad', text: 'Fiscalidad: ¿Cumple sus obligaciones fiscales de forma transparente?' },
 
   // ALIANZAS
-  { id: 'a1', category: 'alianzas', text: 'Colaboración empresarial: se participa en proyectos o iniciativas conjuntas con otras empresas.' },
-  { id: 'a2', category: 'alianzas', text: 'Asociaciones y clústeres: participa activamente en asociaciones o redes empresariales.' },
-  { id: 'a3', category: 'alianzas', text: 'Administraciones públicas: colabora con administraciones en programas o iniciativas.' },
-  { id: 'a4', category: 'alianzas', text: 'Entidades sociales: colabora con ONG, fundaciones u organizaciones sociales.' },
-  { id: 'a5', category: 'alianzas', text: 'Centros educativos: colabora con centros de formación o universidades.' },
-  { id: 'a6', category: 'alianzas', text: 'Patrocinios y apoyos: apoya iniciativas externas (culturales, sociales, ambientales).' },
-  { id: 'a7', category: 'alianzas', text: 'Intercambio de buenas prácticas: comparte y/o recibe buenas prácticas en sostenibilidad.' }
+  { id: 'a1', category: 'alianzas', text: 'Sectorial: ¿Participa en asociaciones empresariales?' },
+  { id: 'a2', category: 'alianzas', text: 'Público: ¿Colabora con la administración local o regional?' },
+  { id: 'a3', category: 'alianzas', text: 'Social: ¿Colabora con ONGs o entidades sociales?' },
+  { id: 'a4', category: 'alianzas', text: 'Educación: ¿Acoge alumnos en prácticas o FP Dual?' },
+  { id: 'a5', category: 'alianzas', text: 'Voluntariado: ¿Facilita el voluntariado de sus empleados?' },
+  { id: 'a6', category: 'alianzas', text: 'Conocimiento: ¿Comparte buenas prácticas con otras empresas?' },
+  { id: 'a7', category: 'alianzas', text: 'Mecenazgo: ¿Patrocina actividades culturales o deportivas locales?' }
 ];
 
 export const COMPANY_SIZE_OPTIONS = [

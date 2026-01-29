@@ -1,6 +1,7 @@
 import React from 'react';
-import { Question, QuestionOption } from '../types';
+import { Question } from '../types';
 import { OPTIONS } from '../data';
+import { Check } from 'lucide-react';
 
 interface QuestionCardProps {
   question: Question;
@@ -10,8 +11,8 @@ interface QuestionCardProps {
 
 export const QuestionCard: React.FC<QuestionCardProps> = ({ question, selectedValue, onSelect }) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-4">
-      <h3 className="text-lg font-semibold text-gray-900 mb-5 leading-relaxed">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8 hover:shadow-md transition-shadow duration-300">
+      <h3 className="text-lg md:text-xl font-medium text-gray-900 mb-6 leading-relaxed">
         {question.text}
       </h3>
       
@@ -19,29 +20,35 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({ question, selectedVa
         {OPTIONS.map((option) => {
           const isSelected = selectedValue === option.value;
           
-          let baseClasses = "relative flex flex-col p-4 cursor-pointer rounded border text-sm transition-all duration-200 focus:outline-none h-full";
+          let baseClasses = "relative group flex flex-col p-4 cursor-pointer rounded-lg border text-sm transition-all duration-200 focus:outline-none h-full select-none";
           let stateClasses = isSelected
-            ? "border-blue-900 bg-blue-50 text-blue-900 ring-1 ring-blue-900 shadow-md"
-            : "border-gray-300 hover:border-blue-400 hover:bg-gray-50 text-gray-600";
+            ? "border-blue-900 bg-blue-50/50 text-blue-900 ring-2 ring-blue-900 shadow-sm z-10"
+            : "border-gray-200 hover:border-blue-300 hover:bg-gray-50 text-gray-600";
 
           return (
-            <button
+            <div
               key={option.value}
               onClick={() => onSelect(option.value)}
               className={`${baseClasses} ${stateClasses}`}
+              role="radio"
+              aria-checked={isSelected}
+              tabIndex={0}
             >
-              <div className="flex items-center mb-2">
-                <div className={`w-4 h-4 rounded-full border mr-2 flex items-center justify-center ${isSelected ? 'border-blue-900' : 'border-gray-400'}`}>
-                  {isSelected && <div className="w-2 h-2 rounded-full bg-blue-900" />}
+              <div className="flex items-center justify-between mb-2">
+                <span className={`font-bold transition-colors ${isSelected ? 'text-blue-900' : 'text-gray-700 group-hover:text-blue-800'}`}>
+                    {option.label}
+                </span>
+                <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all
+                    ${isSelected ? 'border-blue-900 bg-blue-900' : 'border-gray-300 bg-white'}`}>
+                  {isSelected && <Check size={12} className="text-white" />}
                 </div>
-                <span className="font-bold">{option.label}</span>
               </div>
               {option.description && (
-                <span className="text-xs text-left text-gray-500 leading-tight">
+                <span className={`text-xs text-left leading-tight transition-colors ${isSelected ? 'text-blue-800' : 'text-gray-500'}`}>
                   {option.description}
                 </span>
               )}
-            </button>
+            </div>
           );
         })}
       </div>

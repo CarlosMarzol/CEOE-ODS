@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CEOE | Autodiagnóstico ODS</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
       body {
         font-family: 'Inter', sans-serif;
@@ -16,6 +17,15 @@
       .bg-ceoe-blue { background-color: #002E6D; }
 
       .print-only { display: none; }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.5s ease-out forwards;
+        opacity: 0; /* Start hidden */
+      }
 
       @media print {
         @page { margin: 0; size: A4; } /* Zero margin for full cover page */
@@ -48,7 +58,7 @@
         .grid.lg\:grid-cols-2 { display: grid !important; grid-template-columns: 1fr 1fr; gap: 2rem; }
 
         /* Ensure texts are black/dark for readability */
-        h1, h2, h3, p, span, div { color: black; }
+        h1, h2, h3, h4, p, span, div, li { color: black; }
         
         /* Force background colors and text colors for important visual elements */
         .bg-blue-900, .bg-blue-900 * { 
@@ -59,9 +69,13 @@
         .text-blue-900 { color: #002E6D !important; }
         .text-white { color: white !important; }
 
+        /* Specific print hacks for Recharts */
+        .recharts-responsive-container { height: 400px !important; }
+        
         /* Avoid breaks inside important elements */
         .page-break-avoid { page-break-inside: avoid; }
         .break-after-page { break-after: page; page-break-after: always; }
+        .break-before-page { break-before: page; page-break-before: always; }
       }
     </style>
   <script type="importmap">

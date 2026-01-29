@@ -19,8 +19,9 @@ export const CompanyInfo: React.FC<CompanyInfoProps> = ({ initialData, onNext })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.size || !formData.sector || !formData.location || !formData.role) {
-      setError('Por favor complete todos los campos obligatorios marcados con asterisco (*)');
+    // Validate all fields including businessName
+    if (!formData.businessName || !formData.size || !formData.sector || !formData.location || !formData.role) {
+      setError('Por favor complete todos los campos. El nombre de la empresa es necesario para emitir el certificado.');
       return;
     }
     onNext(formData);
@@ -35,7 +36,7 @@ export const CompanyInfo: React.FC<CompanyInfoProps> = ({ initialData, onNext })
             </div>
             <div>
                 <h2 className="text-xl font-bold text-gray-900">Perfil de la Organización</h2>
-                <p className="text-sm text-gray-500">Datos de segmentación para el informe</p>
+                <p className="text-sm text-gray-500">Datos necesarios para la emisión del certificado</p>
             </div>
         </div>
 
@@ -44,7 +45,7 @@ export const CompanyInfo: React.FC<CompanyInfoProps> = ({ initialData, onNext })
             <div className="grid md:grid-cols-2 gap-6">
                 <div className="col-span-2">
                 <label className="block text-sm font-bold text-gray-700 mb-2">
-                    Razón social (Opcional)
+                    Razón Social / Nombre de la Empresa *
                 </label>
                 <input
                     type="text"
@@ -52,8 +53,9 @@ export const CompanyInfo: React.FC<CompanyInfoProps> = ({ initialData, onNext })
                     value={formData.businessName || ''}
                     onChange={handleChange}
                     className="w-full p-3 border border-gray-300 rounded bg-gray-50 focus:bg-white focus:ring-2 focus:ring-blue-900 focus:border-blue-900 outline-none transition"
-                    placeholder="Nombre de su empresa"
+                    placeholder="Ej. Industrias García S.L."
                 />
+                <p className="text-xs text-gray-400 mt-1">Este nombre aparecerá en el certificado oficial de resultados.</p>
                 </div>
 
                 <div>
@@ -126,7 +128,7 @@ export const CompanyInfo: React.FC<CompanyInfoProps> = ({ initialData, onNext })
             </div>
 
             {error && (
-            <div className="p-4 bg-red-50 text-red-700 border-l-4 border-red-600 text-sm font-medium">
+            <div className="p-4 bg-red-50 text-red-700 border-l-4 border-red-600 text-sm font-medium animate-pulse">
                 {error}
             </div>
             )}
@@ -136,7 +138,7 @@ export const CompanyInfo: React.FC<CompanyInfoProps> = ({ initialData, onNext })
                 type="submit"
                 className="w-full bg-blue-900 text-white py-4 rounded font-bold uppercase tracking-wider hover:bg-blue-800 transition-colors shadow-sm"
                 >
-                Continuar al Cuestionario
+                Generar Autodiagnóstico
                 </button>
             </div>
         </form>
